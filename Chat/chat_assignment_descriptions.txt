@@ -1,0 +1,37 @@
+Functionality
+
+You are to create a chat system. In particular, you will create a chat client and a chat server. You may use your Messenger code as a base for this project, although you will have to revise that code significantly. Notably, the client and the server must be separate programs. Your system will perform as follows:
+
+    The server will listen for connections from clients.
+    Once a client is connected, it can send messages to the server. It will also receive from the server all messages sent from the other connected clients.
+    NOTE: The first message sent by the client must be the name of the user, in order for the server to forward the name of the user with each messenge sent.
+    Messages must be provided to the client using standard input.
+    Immediately after receiving a message, the server must forward the message and the name of the user who sent the message to all connected clients, except for the client that sent the message. DO NOT SEND THE MESSAGE BACK TO THE ORIGINATING CLIENT!
+    The format of the combined name and message includes a colon, followed by a single space, immediately after the name of the sender; the message follows. Hence, the format can be represented as follows:
+
+    <sender name>: <message>
+
+    Once it receives a message, which now includes the name of the sender, the client will write the message to standard output.
+    The client must write each message on its own line of output.
+    When a client closes its socket, the server will remove that client from its list, but the server will continue to run and the other connected clients will be able to continue exchanging messages. Additionally, new clients will be able to connect and exchange messages.
+
+Usage
+
+    Server:
+        Python:
+
+        $> python ChatServer.py <port number>
+
+        Java:
+
+        $> java ChatServer <port number>
+
+    Client:
+        Python:
+
+        $> python ChatClient.py <port number>
+
+        Java:
+
+        $> java ChatClient <port number>
+

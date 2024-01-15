@@ -1,0 +1,86 @@
+Functionality
+
+You are to create an enhanced chat system. In particular, you will create a chat client and a chat server that are capable of transmitting messages as well as transferring files. In particular, the system will perform as follows:
+
+    The server will listen for connections from clients.
+    Once a client is connected, it can send messages, at will, to the server. It will also receive from the server all messages sent by the other connected clients.
+    The user will provide messages to the client using standard input.
+    NOTE: The first message sent by the client must be the name of the user, in order for the server to forward the name of the user who has sent a message. Additionally, the user name will be used to identify the user who owns a file that may be requested by another user.
+    Immediately after receiving a message, the server must forward the message and the name of the user who sent the message to all connected clients, except for the client that sent the message. DO NOT SEND THE MESSAGE BACK TO THE ORIGINATING CLIENT!
+    The format of the combined name and message includes a colon, followed by a single space, immediately after the name of the sender; the message follows. Hence, the format can be represented as follows:
+
+    <sender name>: <message>
+
+    Once it receives a message, which now includes the name of the sender, the client will write the message to standard output.
+    The client must write each message on its own line of output.
+    In addition to transmitting and receiving messages, the client and server will also transfer files using a binary transfer method, meaning that all of the bytes of a file will be transmitted exactly as is.
+    Because the client must also transfer files, it will monitor file transfer requests. Although the client could use the same socket connection for transferring files, the user of the client that is sending a file might interfere with the transfer process by sending a text message during the transfer. Therefore, you are strongly encouraged to create a separate socket connection for transferring files.
+    In order to initiate a file transfer request, the client must send the name of the file and the name of the user who owns a copy of the file to the server. A user may request a file at any time, and the name of the file and the owning user must be supplied by the requesting user through standard input.
+    When the server receives a file transfer request, it must immediately initiate a file transfer process. The server may set up a relay between the clients involved, i.e., the requesting client and the supplying client, or it may set up a peer-to-peer connection between the requesting client and the supplying client. In either case, all of the bytes in the file must be transmitted as is. If the file cannot be found or read, the client that is supposed to supply the file may simply ignore the request but it may not terminate. Whether requesting or supplying a file, the client must continue to send and receive messages, as well as be able to request additional files and respond to additional file requests.
+    When the requesting client receives the file bytes, it must store them in a file with the same name in the local directory.
+    When a client closes its socket, the server will remove that client from its list, but the server will continue to run and the other connected clients will be able to continue exchanging messages and files. Additionally, new clients will be able to connect and exchange messages and files.
+    Because the client program will be menu-driven, the user will terminate the client by using standard input to select an appropriate option.
+
+Client Interface
+
+    As explained above, the user will interact with the client through standard input. In order to facilitate interaction, as well as for evaluation, the client must conform to the following input standards:
+        The client must display a menu of options for the user to choose from. Each option is associated with a single letter, as shown. The options are:
+            Send a message (m)
+            Request a file (f)
+            Exit the client (and disconnect from the server) (x)
+        The user may enter an option using a lower-case letter.
+        In order to send a message, the user chooses the message option by typing the 'm' character and pressing the Enter key. The user then types the message. After the user enters the message, the client redisplays the menu for the next user action.
+        In order to request a file, the user chooses the option to request a file, 'f'. The client must then prompt the user to enter first the name of the user who owns the file and second the name of the file. You may assume that a particular user connected to the chat server owns a particular file, although you are responsible for setting up an appropriate test to verify that your file transfer functionality works correctly. After the user enters the file request information, the client redisplays the menu for the next user action while the file transfer request is processed in another thread. Hence, the user must be able to continue sending messages and requesting other files while prior file requests are being processed.
+        The client will shutdown any connections and terminate as soon as the user enters the 'x' option.
+    Example interaction:
+
+        Enter an option ('m', 'f', 'x'):
+          (M)essage (send)
+          (F)ile (request)
+         e(X)it
+        m
+        Enter your message:
+        hello!
+        Enter an option ('m', 'f', 'x'):
+          (M)essage (send)
+          (F)ile (request)
+         e(X)it
+        f
+        Who owns the file?
+        client1
+        Which file do you want?
+        Ameca_splendens.jpg
+        Enter an option ('m', 'f', 'x'):
+          (M)essage (send)
+          (F)ile (request)
+         e(X)it
+        m
+        Enter your message:
+        another important message!
+        Enter an option ('m', 'f', 'x'):
+          (M)essage (send)
+          (F)ile (request)
+         e(X)it
+        x
+        closing your sockets...goodbye
+
+Usage
+
+    The server will simply be given the listening port number on the command line (without the '-' character), as follows:
+        Python:
+
+        $> python ChatServer.py <listening port number> 
+
+        Java:
+
+        $> java ChatServer <listening port number> 
+
+    Assuming that the client uses a separate socket for file transfers, the port number on which the client will listen for file requests is also provided on the command line, along with the port number of the chat server. The port number that the client will listen on is designated with an -l option, while -p specifies the port number of the chat server:
+        Python:
+
+        $> python ChatClient.py -l <client listening port number> -p <connect server port>
+
+        Java:
+
+        $> java ChatClient -l <client listening port number> -p <connect server port>
+

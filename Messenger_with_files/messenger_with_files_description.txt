@@ -1,0 +1,82 @@
+Functionality
+
+You are to create an enhanced direct messenger program. In particular, the program will perform as follows:
+
+    It must behave as either a client or a server, depending on the command line arguments supplied when started.
+    In addition to transmitting and receiving messages, the program will also transfer files using a binary transfer method, meaning that all of the bytes of a file will be transmitted exactly as is.
+    Because the program must also transfer files, it will listen for file transfer requests. Consequently, the program must contain a server to listen for file requests. NOTE: YOU MAY NOT USE THE TEXT OF A MESSAGE TO REQUEST A FILE; FILE TRANSFER REQUESTS MUST BE SPECIFIED SEPARATELY FROM MESSAGES.
+    For purposes of this exercise, you may hard-code your program to connect to localhost.
+    Once the client and server messengers are connected, either end can send messages, at will, to the other end.
+    Messages must be provided to the program using standard input.
+    Immediately after receiving a message, the program must output the message to standard output.
+    A user may request a file from the other endpoint at any time. The user must supply the name of the requested file using standard input.
+    When the other end receives a file transfer request, it must immediately send all of the bytes in the file to the other end. If the file cannot be found or read, the program may simply ignore the request but it may not terminate.
+    When the requesting program receives the file bytes, it must store them in a file with the same name in the local directory.
+    Because the program will be menu-driven, the user will terminate the program by using standard input to select an appropriate option (see below).
+    The program is terminated by first shutting down sending, then closing the socket. Once one end shuts down, the other side will receive a zero-length message, informing it of the shut down. The other side must then shut down immediately.
+
+User Interface
+
+    As explained above, the user will interact with the program through standard input. In order to facilitate interaction, as well as for evaluation, the program must conform to the following input standards:
+        The program must display a menu of options for the user to choose from. Each option is associated with a single letter, as shown. The options are:
+            Send a message (m)
+            Request a file (f)
+            Exit the program (and disconnect from the other messenger) (x)
+        The user may enter an option using a lower-case letter.
+        In order to send a message, the user chooses the message option by typing the 'm' character and pressing the Enter key. The user then types the message. After the user enters the message, the program redisplays the menu for the next user action.
+        In order to request a file, the user chooses the option to request a file, 'f'. The program must then prompt the user to enter the name of the file. After the user enters the file request information, the program redisplays the menu for the next user action while the file transfer request is processed in another thread. Hence, the user may be able to continue sending messages and requesting other files while prior file requests are being processed.
+        The program will shutdown any connections and terminate as soon as the user enters the 'x' option.
+    Example interaction:
+
+        Enter an option ('m', 'f', 'x'):
+          (M)essage (send)
+          (F)ile (request)
+         e(X)it
+        m
+        Enter your message:
+        hello!
+        Enter an option ('m', 'f', 'x'):
+          (M)essage (send)
+          (F)ile (request)
+         e(X)it
+        f
+        Which file do you want?
+        Ameca_splendens.jpg
+        Enter an option ('m', 'f', 'x'):
+          (M)essage (send)
+          (F)ile (request)
+         e(X)it
+        m
+        Enter your message:
+        another important message!
+        Enter an option ('m', 'f', 'x'):
+          (M)essage (send)
+          (F)ile (request)
+         e(X)it
+        x
+        closing your sockets...goodbye
+
+Usage
+
+    The program must be started with the -l option, which is the socket its server will listen on.
+    If the program is to act as a client, two more options may be used. An -s option specifies the address of the server to connect to, and -p specifies the port number of the server to connect to. If the -s option is not used, then the program connects to localhost.
+    Usage as a server:
+        Python:
+
+        $> python messenger_with_files.py -l <listening port number> 
+
+        Java:
+
+        $> java MessengerWithFiles -l <listening port number> 
+
+    Usage as a client:
+        Python:
+
+        $> python messenger_with_files.py -l <listening port number> \
+         -p <connect server port> [-s] [connect server address] 
+
+        Java:
+
+        $> java MessengerWithFiles -l <listening port number> \
+         -p <connect server port> [-s] [connect server address]
+

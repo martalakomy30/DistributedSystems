@@ -1,0 +1,35 @@
+You are to create a direct messenger program. In particular, the program will perform as follows:
+
+    It must behave as either a client or a server, depending on the command line arguments supplied when started.
+    Specifically, the -l option will direct the program to listen for connections, thereby acting as a server. If the -l option is not present on the command line, your program will connect to a server, thereby acting as a client.
+    The port number must also be supplied as a command line argument.
+    Although your messenger may be hard-coded to connect only to localhost when acting as a client, you may include a server address on the command line as well, thereby permitting your messenger to connect between hosts.
+    The -l option, if used, should be placed immediately after the name of the program and before the port number and server address arguments.
+    Once the client and server messengers are connected, either end can send text messages to the other end.
+    Messages must be provided to the program using standard input.
+    Immediately after receiving a message, the program must output the message to standard output.
+    A messenger program must begin the termination process as soon as either of the following conditions occur:
+        standard input has been closed by the program's user
+        the program receives a socket message from the other messenger that it is shutting down
+    If a messenger is terminating because standard input has closed, the program must first shut down sending, then close the socket. Once one end shuts down, the other messenger will receive a zero-length message, i.e., a packet header with no payload, informing it of the shut down. The other side must then terminate immediately.
+
+Usage
+
+    Usage as a server:
+        Python:
+
+        $> python messenger.py -l <port number>
+
+        Java:
+
+        $> java Messenger -l <port number>
+
+    Usage as a client:
+        Python:
+
+        $> python messenger.py <port number> [<server address>]
+
+        Java:
+
+        $> java Messenger <port number> [<server address>]
+
